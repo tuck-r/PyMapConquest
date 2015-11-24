@@ -6,4 +6,5 @@ def get_all_valid_moves(game_state, player_number):
 
     Figures out all the valid moves a player could make at this moment in time.
     """
+    game_state
     return []

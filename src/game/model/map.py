@@ -44,12 +44,12 @@ class Map:
                         new_resources[key_resource] += count
         return new_resources
 
-    def find_owned_tiles(self, player_id):
+    def find_owned_tile_ids(self, player_id):
         """
         :param player_id: int: Index of the player to find the tiles belonging to.
         :return: list: List of coordinates of tiles held by player.
 
-        Find all tiles held by a player.
+        Find all ids (i.e. i,j coords) of tiles held by a player.
         """
         owned_tiles = []
         for selected_row in self.map_tile_array:
@@ -57,6 +57,21 @@ class Map:
                 if player_id == selected_tile.get_is_owned_by():
                     owned_tiles.append(selected_tile.get_coordinates())
         return owned_tiles
+
+    def find_owned_tiles(self, player_id):
+        """
+        :param player_id: int: Index of the player to find the tiles belonging to.
+        :return: list(Tile): List of tiles held by player.
+
+        Find all tiles held by a player.
+        """
+        owned_tiles = []
+        for selected_row in self.map_tile_array:
+            for selected_tile in selected_row:
+                if player_id == selected_tile.get_is_owned_by():
+                    owned_tiles.append(selected_tile)
+        return owned_tiles
+
 
 class Tile:
     def __init__(self, i, j):
@@ -95,3 +110,9 @@ class Tile:
 
     def get_resources(self):
         return self.resources
+
+    def get_unit(self):
+        return self.unit
+
+    def get_building(self):
+        return self.building
