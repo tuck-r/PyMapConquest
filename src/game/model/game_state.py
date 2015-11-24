@@ -20,6 +20,8 @@ class GameState:
         self.NUM_ROUND_LIMIT = 10
         # Track how many rounds have been played.
         self.num_rounds_played = 0
+        # Initialise starting tile for each player.
+        self.current_map_state.initialise_start_tiles(self.players_dict)
 
     def start_of_player_turn(self):
         """
@@ -82,6 +84,9 @@ class GameState:
         Prints end game information.
         """
         pass
+
+    def get_held_tiles(self, player_id):
+        return self.current_map_state.find_owned_tiles(player_id)
 
     def main_game_loop(self):
         pass

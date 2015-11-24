@@ -40,6 +40,7 @@ def play_game(player_list, player_example_list):
     count_invalid_moves = 0
 
     # Start game loop.
+    # TODO: Move the game loop logic somewhere else.
     while not curr_game_state.has_game_ended():
         # If it is the start of their turn, update all resources.
         if start_of_turn is True:
@@ -47,6 +48,7 @@ def play_game(player_list, player_example_list):
             curr_game_state.start_of_player_turn()
             start_of_turn = False
             print "Player resources updated."
+        print curr_game_state.get_held_tiles(curr_player_index)
         proposed_move = dict_players[curr_player_index]["class_defs"].return_move(curr_game_state, curr_player_index)
         # Check if move is valid.
         is_move_valid = curr_game_state.is_move_valid(proposed_move)
