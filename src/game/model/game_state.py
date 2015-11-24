@@ -29,7 +29,9 @@ class GameState:
         """
         # Update resources held by the active player.
         # Loop through all tiles, seeing if the active player owns it.
-        self.current_map_state.get_resource_update(self.active_player)
+        resources_to_add = self.current_map_state.get_resource_update(self.active_player)
+        for key_resource, value_count in resources_to_add.items():
+            self.players_dict[self.active_player]["curr_resources"][key_resource] += value_count
 
     def is_move_valid(self, proposed_move):
         """
@@ -87,6 +89,9 @@ class GameState:
 
     def get_held_tiles(self, player_id):
         return self.current_map_state.find_owned_tiles(player_id)
+
+    def get_player_resources(self, player_id):
+        return self.players_dict[player_id]["curr_resources"]
 
     def main_game_loop(self):
         pass

@@ -10,6 +10,7 @@ class Map:
 
     def initialise_start_tiles(self, players_info_dict):
         """
+        :param players_info_dict: dict: dict containing players information.
         :return: None.
 
         Assigns a tile to each player at the start of the game.

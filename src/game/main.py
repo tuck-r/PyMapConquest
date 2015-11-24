@@ -49,6 +49,7 @@ def play_game(player_list, player_example_list):
             start_of_turn = False
             print "Player resources updated."
         print curr_game_state.get_held_tiles(curr_player_index)
+        print curr_game_state.get_player_resources(curr_player_index)
         proposed_move = dict_players[curr_player_index]["class_defs"].return_move(curr_game_state, curr_player_index)
         # Check if move is valid.
         is_move_valid = curr_game_state.is_move_valid(proposed_move)
