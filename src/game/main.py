@@ -2,6 +2,7 @@ from pydoc import locate
 import argparse
 
 from game.model.game_state import GameState
+from graphical.draw_game import DrawGame
 
 # Import path to where user made players are stored and loaded from.
 _PLAYERS_PATH = "players"
@@ -11,7 +12,7 @@ _PLAYERS_EXAMPLE_PATH = "players_example"
 # Limit to the number of invalid moves a player can propose before the game will end their turn for them.
 _INVALID_MOVE_LIMIT = 3
 
-def play_game(player_list, player_example_list):
+def play_game(player_list, player_example_list, graphical_mode):
     # Import all player classes that have been added to the game.
     # Each entry in the player_classes list is an instance of that class.
     player_classes = []
@@ -84,6 +85,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--players", help="Players to add to the game.", nargs="*")
     parser.add_argument("--players_example", help="Example players to add to the game.", nargs="*")
+    parser.add_argument("--graphical_mode", help="If given, runs in graphical mode.", action="store_true")
     args = parser.parse_args()
 
-    play_game(args.players, args.players_example)
+    play_game(args.players, args.players_example, args.graphical_mode)
