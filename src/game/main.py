@@ -73,7 +73,7 @@ def play_game(player_list, player_example_list):
         # Otherwise if the move is allowed, update the game state with it.
         if is_move_valid:
             print "Player " + str(curr_player_index) + " is making move:"
-            print str(proposed_move)
+            proposed_move.print_move()
             curr_game_state.make_move(proposed_move)
             count_invalid_moves = 0
 

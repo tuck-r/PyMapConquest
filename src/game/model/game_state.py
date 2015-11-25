@@ -19,7 +19,7 @@ class GameState:
         # Track who the current active player is.
         self.active_player = 0
         # Currently while testing, we have a round limit.
-        self.NUM_ROUND_LIMIT = 10
+        self.NUM_ROUND_LIMIT = 5
         # Track how many rounds have been played.
         self.num_rounds_played = 0
         # Initialise starting tile for each player.
@@ -128,7 +128,7 @@ class GameState:
 
         if move_type == "build":
             # Apply "build" type logic.
-            self.current_map_state.build_on_tile(self.active_player, move_metadata["building_name"])
+            self.current_map_state.build_on_tile(move_metadata["tile_coords"], self.active_player, move_metadata["building_name"])
             # Decrement player resources according to the cost of the building.
             for key_resource, value_cost in move_metadata["building_cost"].items():
                 self.players_dict[self.active_player]["curr_resources"][key_resource] -= value_cost

@@ -9,4 +9,4 @@ def get_all_valid_moves(game_state):
     valid_moves = game_state.get_valid_moves()
     for a_move in valid_moves:
         a_move.print_move()
-    return []
+    return valid_moves
