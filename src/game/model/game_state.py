@@ -23,6 +23,13 @@ class GameState:
         # Initialise starting tile for each player.
         self.current_map_state.initialise_start_tiles(self.players_dict)
 
+        ###
+        # Options/status for current player.
+        ###
+        self.tiles_held = []
+        self.tiles_adjacent_free = []
+        self.tiles_adjacent_enemy = []
+
     def start_of_player_turn(self):
         """
         :return:
@@ -32,6 +39,15 @@ class GameState:
         resources_to_add = self.current_map_state.get_resource_update(self.active_player)
         for key_resource, value_count in resources_to_add.items():
             self.players_dict[self.active_player]["curr_resources"][key_resource] += value_count
+
+    def update_player_status(self):
+        """
+        :return:
+
+        Updates variables storing current status/options available to the currently active player.
+        """
+        self.tiles_held = self.get_held_tiles(self.active_player)
+        self.tiles_adjacent_free = self.get_adjacent_free_tiles(self.active_player)
 
     def is_move_valid(self, proposed_move):
         """
@@ -53,12 +69,10 @@ class GameState:
 
         Find all valid moves that a player could make at this moment.
         """
-        # Find all tiles owned by player.
-        owned_tiles = self.get_held_tiles(player_id)
         # Check each tile to see which ones have room for units or buildings.
         has_room_for_unit = []
         has_room_for_building = []
-        for a_tile in owned_tiles:
+        for a_tile in self.tiles_held:
             if a_tile.get_unit is None:
                 has_room_for_unit.append(a_tile)
             if a_tile.get_building is None:
@@ -69,8 +83,6 @@ class GameState:
         # Check all buildings that could be built with current resources.
         if len(has_room_for_building) > 0:
             pass
-        # Find all adjacent tiles that aren't owned by another player that could be built on to claim.
-        adjacent_tiles = []
 
     def make_move(self, make_move):
         """
@@ -118,6 +130,9 @@ class GameState:
 
     def get_held_tiles(self, player_id):
         return self.current_map_state.find_owned_tiles(player_id)
+
+    def get_adjacent_free_tiles(self, player_id):
+        return self.current_map_state.find_adjacent_free_tiles(player_id)
 
     def get_player_resources(self, player_id):
         return self.players_dict[player_id]["curr_resources"]

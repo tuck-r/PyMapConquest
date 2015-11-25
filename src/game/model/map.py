@@ -72,6 +72,57 @@ class Map:
                     owned_tiles.append(selected_tile)
         return owned_tiles
 
+    def find_adjacent_free_tiles(self, player_id):
+        """
+        :param player_id: Index of the current active player.
+        :return: list(Tile): List of tiles adjacent to any tile owned by the active player but is currently unowned.
+
+        Finds all free tiles adjacent to tiles owned by the current active player.
+        """
+        # Find the ids of all the tiles owned by the current player.
+        owned_tile_ids = set(self.find_owned_tile_ids(player_id))
+        # Generate all coordinates that are next to all the tiles in the owned set.
+        adjacent_coords = set([])
+        for coord_pair in owned_tile_ids:
+            # Check for edge cases.
+            if coord_pair[0] == 0 and coord_pair[1] == 0:
+                adjacent_coords.add((coord_pair[0] + 1, coord_pair[1]))
+                adjacent_coords.add((coord_pair[0], coord_pair[1] + 1))
+            elif coord_pair[0] == (self.map_size - 1) and coord_pair[1] == (self.map_size - 1):
+                adjacent_coords.add((coord_pair[0] - 1, coord_pair[1]))
+                adjacent_coords.add((coord_pair[0], coord_pair[1] - 1))
+            elif coord_pair[0] == 0:
+                adjacent_coords.add((coord_pair[0] + 1, coord_pair[1]))
+                adjacent_coords.add((coord_pair[0], coord_pair[1] + 1))
+                adjacent_coords.add((coord_pair[0], coord_pair[1] - 1))
+            elif coord_pair[1] == 0:
+                adjacent_coords.add((coord_pair[0] + 1, coord_pair[1]))
+                adjacent_coords.add((coord_pair[0], coord_pair[1] + 1))
+                adjacent_coords.add((coord_pair[0] - 1, coord_pair[1]))
+            elif coord_pair[0] == (self.map_size - 1):
+                adjacent_coords.add((coord_pair[0], coord_pair[1] + 1))
+                adjacent_coords.add((coord_pair[0] - 1, coord_pair[1]))
+                adjacent_coords.add((coord_pair[0], coord_pair[1] - 1))
+            elif coord_pair[1] == (self.map_size - 1):
+                adjacent_coords.add((coord_pair[0] + 1, coord_pair[1]))
+                adjacent_coords.add((coord_pair[0] - 1, coord_pair[1]))
+                adjacent_coords.add((coord_pair[0], coord_pair[1] - 1))
+            else:
+                adjacent_coords.add((coord_pair[0] + 1, coord_pair[1]))
+                adjacent_coords.add((coord_pair[0] - 1, coord_pair[1]))
+                adjacent_coords.add((coord_pair[0], coord_pair[1] + 1))
+                adjacent_coords.add((coord_pair[0], coord_pair[1] - 1))
+
+        # Remove tiles that we know are already owned by the player.
+        potential_tiles = adjacent_coords.difference(owned_tile_ids)
+        free_adj_tiles = []
+        for try_coords in potential_tiles:
+            found_tile = self.map_tile_array[try_coords[0]][try_coords[1]]
+            if found_tile.get_is_owned_by() is None:
+                free_adj_tiles.append(found_tile)
+
+        return free_adj_tiles
+
 
 class Tile:
     def __init__(self, i, j):
@@ -85,7 +136,7 @@ class Tile:
         self.resources = None
         self.initialise_resources()
         # i,j coordinates for this tile.
-        self.coordinates = [i, j]
+        self.coordinates = (i, j)
 
     def initialise_resources(self):
         """
@@ -116,3 +167,6 @@ class Tile:
 
     def get_building(self):
         return self.building
+
+    def set_building(self, new_building):
+        self.building = new_building
