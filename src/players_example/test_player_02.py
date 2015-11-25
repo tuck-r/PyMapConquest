@@ -14,8 +14,8 @@ VERSION_COMPATIBLE = "0.1"
 # Give your ai player a name to use in-game.
 PLAYER_NAME = "Random Tester Two"
 
-def return_move(game_state, player_number):
-    moves_could_make = helpers.get_all_valid_moves(game_state, player_number)
+def return_move(game_state):
+    moves_could_make = helpers.get_all_valid_moves(game_state)
     if len(moves_could_make) == 0:
         return "END"
     else:

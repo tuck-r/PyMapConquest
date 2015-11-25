@@ -1,4 +1,6 @@
 from game.model.map import Map
+from game.model.building import Building
+from game.model.move import Move
 
 class GameState:
     def __init__(self, dict_player_info):
@@ -29,6 +31,7 @@ class GameState:
         self.tiles_held = []
         self.tiles_adjacent_free = []
         self.tiles_adjacent_enemy = []
+        self.valid_moves = []
 
     def start_of_player_turn(self):
         """
@@ -48,6 +51,7 @@ class GameState:
         """
         self.tiles_held = self.get_held_tiles(self.active_player)
         self.tiles_adjacent_free = self.get_adjacent_free_tiles(self.active_player)
+        self.valid_moves = self.find_all_valid_moves()
 
     def is_move_valid(self, proposed_move):
         """
@@ -62,27 +66,57 @@ class GameState:
             return True
         return False
 
-    def find_all_valid_moves(self, player_id):
+    def find_all_valid_moves(self):
         """
-        :param player_id: int: Index of the player to find the tiles belonging to.
-        :return: list: List of valid moves a player can make at the current moment.
+        :return: list: List of valid moves the player can make at the current moment.
 
         Find all valid moves that a player could make at this moment.
         """
+        moves_found = []
+
         # Check each tile to see which ones have room for units or buildings.
         has_room_for_unit = []
         has_room_for_building = []
+
+        # Check held tiles for room for units and buildings.
         for a_tile in self.tiles_held:
             if a_tile.get_unit is None:
                 has_room_for_unit.append(a_tile)
             if a_tile.get_building is None:
                 has_room_for_building.append(a_tile)
+        # Free adjacent tiles have room for buildings.
+        for a_tile in self.tiles_adjacent_free:
+            # Free squares should have no buildings on them so just go ahead and add them to the candidate tiles.
+            has_room_for_building.append(a_tile)
+
         # Check all units that could be built with current resources.
         if len(has_room_for_unit) > 0:
             pass
         # Check all buildings that could be built with current resources.
         if len(has_room_for_building) > 0:
-            pass
+            has_resources = self.get_player_resources(self.active_player)
+            all_buildings_data = Building.get_all_buildings()
+            # See which buildings they can afford.
+            for key_building_name, value_building_data in all_buildings_data.items():
+                building_cost = value_building_data["Cost"]
+                can_afford = True
+                for key_resource_name, value_cost in building_cost.items():
+                    if has_resources[key_resource_name] < value_cost:
+                        can_afford = False
+
+                if can_afford is True:
+                    # Generate all valid building purchase moves.
+                    for a_tile in has_room_for_building:
+                        move_metadata = {
+                            "tile_coords": a_tile.get_coordinates(),
+                            "building_name": key_building_name
+                        }
+                        new_move = Move("build", move_metadata)
+                        moves_found.append(new_move)
+        return moves_found
+
+    def get_valid_moves(self):
+        return self.valid_moves
 
     def make_move(self, make_move):
         """
