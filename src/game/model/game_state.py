@@ -19,7 +19,7 @@ class GameState:
         # Track who the current active player is.
         self.active_player = 0
         # Currently while testing, we have a round limit.
-        self.NUM_ROUND_LIMIT = 5
+        self.NUM_ROUND_LIMIT = 50
         # Track how many rounds have been played.
         self.num_rounds_played = 0
         # Initialise starting tile for each player.
@@ -32,6 +32,9 @@ class GameState:
         self.tiles_adjacent_free = []
         self.tiles_adjacent_enemy = []
         self.valid_moves = []
+
+    def get_player_ids(self):
+        return self.players_dict.keys()
 
     def start_of_player_turn(self):
         """
@@ -85,8 +88,9 @@ class GameState:
                 has_room_for_building.append(a_tile)
         # Free adjacent tiles have room for buildings.
         for a_tile in self.tiles_adjacent_free:
-            # Free squares should have no buildings on them so just go ahead and add them to the candidate tiles.
-            has_room_for_building.append(a_tile)
+            # Free squares should have no buildings on them and not be owned but check anyway.
+            if a_tile.get_is_owned_by() is None and a_tile.get_building() is None:
+                has_room_for_building.append(a_tile)
 
         # Check all units that could be built with current resources.
         if len(has_room_for_unit) > 0:

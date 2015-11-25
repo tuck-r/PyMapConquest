@@ -1,17 +1,21 @@
 import pygame
 
 WHITE = (255, 255, 255)
+COLOURS = {(255, 0, 0), (0, 255, 0), (0, 0, 255)}
 
 class DrawGame:
     def __init__(self, game_state):
         # Figure out what size each tile should be and the window size.
-        map_size = game_state.get_map_size()
-        tile_dims = 20
-        window_size = (map_size * tile_dims, map_size * tile_dims)
+        self.map_size = game_state.get_map_size()
+        self.tile_dims = 20
+        self.window_size = (self.map_size * self.tile_dims, self.map_size * self.tile_dims)
         # Select a tile colour for each player.
+        self.player_colours = {}
+        for a_player in game_state.get_player_ids():
+            self.player_colours[a_player] = COLOURS.pop()
 
         # Initialise drawing surface window.
-        self.window_dimensions = window_size
+        self.window_dimensions = self.window_size
 
         pygame.init()
         self.DISPLAYSURF = pygame.display.set_mode(self.window_dimensions)
@@ -23,6 +27,11 @@ class DrawGame:
             for a_tile in a_row:
                 coords = a_tile.get_coordinates()
                 held_by = a_tile.get_is_owned_by()
+                if held_by is None:
+                    continue
+                # Draw rectangle.
+                rect_coords = (coords[0] * self.tile_dims, coords[1] * self.tile_dims, self.tile_dims, self.tile_dims)
+                pygame.draw.rect(self.DISPLAYSURF, self.player_colours[held_by], rect_coords)
 
     def update_screen(self, game_state):
         # Clear drawing surface.
