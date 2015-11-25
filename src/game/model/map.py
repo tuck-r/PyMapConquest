@@ -130,6 +130,12 @@ class Map:
         # Place the building.
         self.map_tile_array[coords[0]][coords[1]].set_building(Building(building_name))
 
+    def get_map_size(self):
+        return self.map_size
+
+    def get_map_tile_array(self):
+        return self.map_tile_array
+
 
 class Tile:
     def __init__(self, i, j):

@@ -181,5 +181,11 @@ class GameState:
     def get_player_resources(self, player_id):
         return self.players_dict[player_id]["curr_resources"]
 
+    def get_map_size(self):
+        return self.current_map_state.get_map_size()
+
+    def get_map_tile_array(self):
+        return self.current_map_state.get_map_tile_array()
+
     def main_game_loop(self):
         pass

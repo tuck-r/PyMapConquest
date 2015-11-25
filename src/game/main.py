@@ -1,5 +1,6 @@
 from pydoc import locate
 import argparse
+from time import sleep
 
 from game.model.game_state import GameState
 from graphical.draw_game import DrawGame
@@ -34,6 +35,12 @@ def play_game(player_list, player_example_list, graphical_mode):
 
     # Create a new instance of the game state.
     curr_game_state = GameState(dict_players)
+
+    # If we're running in graphical mode, set up the drawing stuff.
+    display_screen = None
+    if graphical_mode:
+        display_screen = DrawGame(curr_game_state)
+        display_screen.update_screen(curr_game_state)
 
     # Used for tracking current players and turn actions.
     curr_player_index = 0
@@ -78,7 +85,14 @@ def play_game(player_list, player_example_list, graphical_mode):
             curr_game_state.make_move(proposed_move)
             count_invalid_moves = 0
 
+        # If we're in graphical mode, redraw the screen.
+        if graphical_mode:
+            display_screen.update_screen(curr_game_state)
+            sleep(1)
+
     # Game has ended, print end game info.
+    if graphical_mode:
+        display_screen.quit_game()
 
 
 if __name__ == "__main__":
