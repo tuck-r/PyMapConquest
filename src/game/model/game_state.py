@@ -61,8 +61,7 @@ class GameState:
         Tests whether a move a player wishes to make is possible.
         Returns True if the move can be made, False otherwise.
         """
-        # TODO: Actual valid move logic.
-        if proposed_move == "END":
+        if proposed_move == "END" or proposed_move in self.valid_moves:
             return True
         return False
 
@@ -109,7 +108,8 @@ class GameState:
                     for a_tile in has_room_for_building:
                         move_metadata = {
                             "tile_coords": a_tile.get_coordinates(),
-                            "building_name": key_building_name
+                            "building_name": key_building_name,
+                            "building_cost": value_building_data["Cost"]
                         }
                         new_move = Move("build", move_metadata)
                         moves_found.append(new_move)
@@ -123,7 +123,17 @@ class GameState:
         :param make_move: Move: Information detailing the move to make.
         :return: None.
         """
-        pass
+        move_type = make_move.get_move_type()
+        move_metadata = make_move.get_move_metadata()
+
+        if move_type == "build":
+            # Apply "build" type logic.
+            self.current_map_state.build_on_tile(self.active_player, move_metadata["building_name"])
+            # Decrement player resources according to the cost of the building.
+            for key_resource, value_cost in move_metadata["building_cost"].items():
+                self.players_dict[self.active_player]["curr_resources"][key_resource] -= value_cost
+        else:
+            raise Exception("Move type \"%s\" is not valid." % move_type)
 
     def end_current_turn(self):
         """

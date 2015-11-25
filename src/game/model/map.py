@@ -1,5 +1,6 @@
 import random
 from collections import defaultdict
+from game.model.building import Building
 
 class Map:
     def __init__(self):
@@ -122,6 +123,12 @@ class Map:
                 free_adj_tiles.append(found_tile)
 
         return free_adj_tiles
+
+    def build_on_tile(self, coords, player_id, building_name):
+        # Claim tile for the player.
+        self.map_tile_array[coords[0]][coords[1]].set_is_owned_by(player_id)
+        # Place the building.
+        self.map_tile_array[coords[0]][coords[1]].set_building(Building(building_name))
 
 
 class Tile:
