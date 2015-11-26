@@ -154,6 +154,9 @@ class Map:
     def update_tile_bonus(self, coords, attribute, amount):
         self.map_tile_array[coords[0]][coords[1]].update_tile_bonus(attribute, amount)
 
+    def get_tile(self, coords):
+        return self.map_tile_array[coords[0]][coords[1]]
+
 
 class Tile:
     def __init__(self, i, j):

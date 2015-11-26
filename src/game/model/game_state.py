@@ -153,6 +153,11 @@ class GameState:
             # Decrement player resources according to the cost of the building.
             for key_resource, value_cost in move_metadata["building_cost"].items():
                 self.players_dict[self.active_player]["curr_resources"][key_resource] -= value_cost
+            # Update player map bonuses.
+            map_bonuses = self.current_map_state.get_tile(move_metadata["tile_coords"]).get_building().get_building_map_bonuses()
+            if map_bonuses:
+                for key_attribute, value_amount in map_bonuses.items():
+                    self.update_map_bonus(self.active_player, key_attribute, value_amount)
         else:
             raise Exception("Move type \"%s\" is not valid." % move_type)
 
@@ -207,6 +212,9 @@ class GameState:
 
     def get_map_tile_array(self):
         return self.current_map_state.get_map_tile_array()
+
+    def get_player_map_bonuses(self, player_id):
+        return self.players_dict[player_id]["curr_map_bonuses"]
 
     def main_game_loop(self):
         pass
