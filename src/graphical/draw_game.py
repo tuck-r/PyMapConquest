@@ -8,10 +8,11 @@ class DrawGame:
     def __init__(self, game_state):
         # Figure out what size each tile should be and the window size.
         self.map_size = game_state.get_map_size()
-        self.tile_dims = 25
+        self.tile_dims = 30
         self.window_height = self.map_size * self.tile_dims
         self.window_width = self.map_size * self.tile_dims * 2
         self.window_size = (self.window_width, self.window_height)
+
         # Select a tile colour for each player.
         self.player_colours = {}
         for a_player in game_state.get_player_ids():
@@ -25,6 +26,9 @@ class DrawGame:
         self.DISPLAYSURF = pygame.display.set_mode(self.window_dimensions)
         pygame.display.set_caption("PyMapConquest")
 
+        # Create game fonts.
+        self.font_resources = pygame.font.Font(None, 15)
+
     def draw_game_state(self, game_state):
         tile_array = game_state.get_map_tile_array()
         # Iterate through every tile to draw the game map.
@@ -37,6 +41,8 @@ class DrawGame:
                 pygame.draw.rect(self.DISPLAYSURF, self.player_colours[held_by], rect_coords)
                 # Draw resource numbers in the corners
                 # Corners are: {Top Left: Food, Top Right: Wood, Bottom Left: Gold, Bottom Right: Metal}
+                label_food = self.font_resources.render(str(a_tile.get_resources()["Food"]), 1, BLACK)
+                self.DISPLAYSURF.blit(label_food, (coords[0] * self.tile_dims, coords[1] * self.tile_dims))
 
         # Draw black lines to form a grid.
         for i in range(0, self.map_size + 1):
