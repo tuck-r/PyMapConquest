@@ -27,8 +27,8 @@ class DrawGame:
         pygame.display.set_caption("PyMapConquest")
 
         # Create game fonts.
-        self.font_resources = pygame.font.Font(None, 15)
-        self.font_player_resources = pygame.font.Font(None, 30)
+        self.font_resources = pygame.font.SysFont("Ariel", 15)
+        self.font_player_resources = pygame.font.SysFont("Ariel", 25)
 
     def draw_game_state(self, game_state):
         tile_array = game_state.get_map_tile_array()
@@ -72,18 +72,41 @@ class DrawGame:
         # Draw player status/resources.
         players_resources = game_state.get_players_dict()
         for key_player_id, value_resources in players_resources.items():
-            # Generate player resources text.
-            player_resources_text = "Player %s : Food %s : Wood %s : Gold %s : Metal %s" %\
-                                    (key_player_id,
-                                     value_resources["curr_resources"]["Food"],
-                                     value_resources["curr_resources"]["Wood"],
-                                     value_resources["curr_resources"]["Gold"],
-                                     value_resources["curr_resources"]["Metal"])
+            # Get number of tiles held.
+            num_tiles_held = len(game_state.get_held_tile_ids(key_player_id))
+            # Calculate how wide the status area is on the screen.
+            width_of_status_area = self.window_width / 2
+            # Divide into a number of segments.
+            number_of_segs_needed = 6
+            seg_width = width_of_status_area / number_of_segs_needed
             # Write text on the screen.
-            pos_width = self.map_size * self.tile_dims
+            # Height will stay the same, width will vary depending on what label is being displayed.
             pos_height = key_player_id * self.tile_dims
-            label_player_resources = self.font_player_resources.render(player_resources_text, 1, BLACK)
-            self.DISPLAYSURF.blit(label_player_resources, (pos_width, pos_height))
+            pos_width = self.map_size * self.tile_dims
+            # Write player label.
+            label_player = self.font_player_resources.render("Player %s" % key_player_id, 1, BLACK)
+            self.DISPLAYSURF.blit(label_player, (pos_width, pos_height))
+            # Write tiles held label.
+            pos_width += seg_width
+            label_tiles_held = self.font_player_resources.render("Tiles %s" % num_tiles_held, 1, BLACK)
+            self.DISPLAYSURF.blit(label_tiles_held, (pos_width, pos_height))
+            # Write resource labels.
+            pos_width += seg_width
+            label_player_food = self.font_player_resources.render("Food %s" % value_resources["curr_resources"]["Food"],
+                                                                  1, BLACK)
+            self.DISPLAYSURF.blit(label_player_food, (pos_width, pos_height))
+            pos_width += seg_width
+            label_player_wood = self.font_player_resources.render("Wood %s" % value_resources["curr_resources"]["Wood"],
+                                                                  1, BLACK)
+            self.DISPLAYSURF.blit(label_player_wood, (pos_width, pos_height))
+            pos_width += seg_width
+            label_player_gold = self.font_player_resources.render("Gold %s" % value_resources["curr_resources"]["Gold"],
+                                                                  1, BLACK)
+            self.DISPLAYSURF.blit(label_player_gold, (pos_width, pos_height))
+            pos_width += seg_width
+            label_player_metal = self.font_player_resources.render("Metal %s" % value_resources["curr_resources"]["Metal"],
+                                                                   1, BLACK)
+            self.DISPLAYSURF.blit(label_player_metal, (pos_width, pos_height))
 
     def update_screen(self, game_state):
         # Clear drawing surface.
