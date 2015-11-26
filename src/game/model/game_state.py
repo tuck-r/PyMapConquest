@@ -58,6 +58,7 @@ class GameState:
         resources_to_add = self.current_map_state.get_resource_update(self.active_player)
         for key_resource, value_count in resources_to_add.items():
             self.players_dict[self.active_player]["curr_resources"][key_resource] += value_count
+        # TODO: Add map bonus resources.
 
     def update_player_status(self):
         """

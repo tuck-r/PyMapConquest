@@ -43,6 +43,10 @@ class Map:
                     found_on_tile = selected_tile.get_resources()
                     for key_resource, count in found_on_tile.items():
                         new_resources[key_resource] += count
+                    # Also get resource bonuses on tile.
+                    bonus_resources = selected_tile.get_bonuses_resources()
+                    for key_resource, count in bonus_resources.items():
+                        new_resources[key_resource] += count
         return new_resources
 
     def find_owned_tile_ids(self, player_id):
@@ -223,3 +227,10 @@ class Tile:
 
     def set_building(self, new_building):
         self.building = new_building
+
+    def get_bonuses_resources(self):
+        resource_bonuses = dict()
+        for a_resource, amount in self.bonuses.items():
+            if a_resource in {"Food", "Wood", "Gold", "Metal"}:
+                resource_bonuses[a_resource] = amount
+        return resource_bonuses
