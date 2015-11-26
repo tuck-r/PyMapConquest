@@ -1,3 +1,5 @@
+import time
+
 from game.model.map import Map
 from game.model.building import Building
 from game.model.move import Move
@@ -161,6 +163,10 @@ class GameState:
         else:
             raise Exception("Move type \"%s\" is not valid." % move_type)
 
+        # Add move to the log.
+        add_to_game_log = [self.active_player, make_move.format_move()]
+        self.game_move_history.append(add_to_game_log)
+
     def end_current_turn(self):
         """
         :return self.active_player: int: dict index of the new active player.
@@ -168,7 +174,8 @@ class GameState:
         Ends the turn for the current active player,
         and switches to the next player.
         """
-        # TODO: Update turn logs.
+        # Update turn logs.
+        self.game_move_history.append([self.active_player, "END"])
         # Update the active player.
         self.active_player += 1
         if self.active_player >= len(self.players_dict.keys()):
@@ -181,7 +188,7 @@ class GameState:
         """
         :return: boolean: Whether or not the game has reached an end game state.
 
-        TODO: For current testing purposes, max number of rounds has been set to 10.
+        For current testing purposes, a max number of rounds has been set.
         """
         if self.num_rounds_played >= self.NUM_ROUND_LIMIT:
             return True
@@ -215,6 +222,13 @@ class GameState:
 
     def get_player_map_bonuses(self, player_id):
         return self.players_dict[player_id]["curr_map_bonuses"]
+
+    def write_game_log(self):
+        log_file_name = "log_%s.txt" % time.time()
+        open_log_file = open(log_file_name, "wb")
+        for a_move in self.game_move_history:
+            open_log_file.write(str(a_move)+"\n")
+        open_log_file.close()
 
     def main_game_loop(self):
         pass

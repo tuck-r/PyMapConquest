@@ -94,6 +94,7 @@ def play_game(player_list, player_example_list, graphical_mode):
     # Game has ended, print end game info.
     if graphical_mode:
         display_screen.quit_game()
+    curr_game_state.write_game_log()
 
 
 if __name__ == "__main__":

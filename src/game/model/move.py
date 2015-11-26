@@ -12,3 +12,6 @@ class Move:
 
     def print_move(self):
         print [self.move_type, self.move_metadata]
+
+    def format_move(self):
+        return [self.move_type, self.move_metadata]
