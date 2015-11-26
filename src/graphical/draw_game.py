@@ -28,6 +28,7 @@ class DrawGame:
 
         # Create game fonts.
         self.font_resources = pygame.font.Font(None, 15)
+        self.font_player_resources = pygame.font.Font(None, 30)
 
     def draw_game_state(self, game_state):
         tile_array = game_state.get_map_tile_array()
@@ -59,7 +60,7 @@ class DrawGame:
                                       (((coords[0] + 1) * self.tile_dims) - 8,
                                        ((coords[1] + 1) * self.tile_dims) - 10))
 
-        # Draw black lines to form a grid.
+        # Draw black lines to form a grid over the map tiles.
         for i in range(0, self.map_size + 1):
             start_point_vert = (i * self.tile_dims, 0)
             start_point_horz = (0, i * self.tile_dims)
@@ -67,7 +68,22 @@ class DrawGame:
             end_point_horz = (self.map_size * self.tile_dims, i * self.tile_dims)
             pygame.draw.line(self.DISPLAYSURF, BLACK, start_point_vert, end_point_vert, 1)
             pygame.draw.line(self.DISPLAYSURF, BLACK, start_point_horz, end_point_horz, 1)
-        # TODO: Draw player status/resources.
+
+        # Draw player status/resources.
+        players_resources = game_state.get_players_dict()
+        for key_player_id, value_resources in players_resources.items():
+            # Generate player resources text.
+            player_resources_text = "Player %s : Food %s : Wood %s : Gold %s : Metal %s" %\
+                                    (key_player_id,
+                                     value_resources["curr_resources"]["Food"],
+                                     value_resources["curr_resources"]["Wood"],
+                                     value_resources["curr_resources"]["Gold"],
+                                     value_resources["curr_resources"]["Metal"])
+            # Write text on the screen.
+            pos_width = self.map_size * self.tile_dims
+            pos_height = key_player_id * self.tile_dims
+            label_player_resources = self.font_player_resources.render(player_resources_text, 1, BLACK)
+            self.DISPLAYSURF.blit(label_player_resources, (pos_width, pos_height))
 
     def update_screen(self, game_state):
         # Clear drawing surface.

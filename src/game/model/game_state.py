@@ -36,6 +36,9 @@ class GameState:
     def get_player_ids(self):
         return self.players_dict.keys()
 
+    def get_players_dict(self):
+        return self.players_dict
+
     def start_of_player_turn(self):
         """
         :return:
