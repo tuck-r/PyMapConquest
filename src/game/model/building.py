@@ -52,3 +52,15 @@ class Building:
     @staticmethod
     def get_all_buildings():
         return ALL_BUILDINGS
+
+    def get_building_map_bonuses(self):
+        try:
+            return self.building_data["Effects"]["Bonus"]["Map"]
+        except KeyError:
+            return None
+
+    def get_building_tile_bonuses(self):
+        try:
+            return self.building_data["Effects"]["Bonus"]["Tile"]
+        except KeyError:
+            return None

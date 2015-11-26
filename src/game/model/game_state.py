@@ -14,12 +14,12 @@ class GameState:
                                                       "Wood": 500,
                                                       "Metal": 500}
             # Initialise map bonuses values.
-            self.players_dict[i]["curr_map_bonuses"] = {"Food": 0,
-                                                        "Gold": 0,
-                                                        "Wood": 0,
-                                                        "Metal": 0,
-                                                        "Attack_Buildings": 0,
-                                                        "Defense_Buildings": 0}
+            self.players_dict[i]["curr_map_bonuses"] = {"Food": 0.0,
+                                                        "Gold": 0.0,
+                                                        "Wood": 0.0,
+                                                        "Metal": 0.0,
+                                                        "Attack_Buildings": 0.0,
+                                                        "Defense_Buildings": 0.0}
         # Create a new starting map.
         self.current_map_state = Map()
         # Create a record of moves that have been made.
@@ -66,6 +66,12 @@ class GameState:
         self.tiles_held = self.get_held_tiles(self.active_player)
         self.tiles_adjacent_free = self.get_adjacent_free_tiles(self.active_player)
         self.valid_moves = self.find_all_valid_moves()
+
+    def update_map_bonus(self, player_id, attribute, amount):
+        self.players_dict[player_id]["curr_map_bonuses"][attribute] += amount
+
+    def update_tile_bonus(self, coords, attribute, amount):
+        self.current_map_state.update_tile_bonus(coords, attribute, amount)
 
     def is_move_valid(self, proposed_move):
         """

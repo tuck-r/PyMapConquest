@@ -138,12 +138,21 @@ class Map:
         self.map_tile_array[coords[0]][coords[1]].set_is_owned_by(player_id)
         # Place the building.
         self.map_tile_array[coords[0]][coords[1]].set_building(Building(building_name))
+        # Update tile bonuses.
+        tile_bonuses = self.map_tile_array[coords[0]][coords[1]].get_building().get_building_tile_bonuses()
+        # Some buildings do not have tile bonuses, check first.
+        if tile_bonuses:
+            for key_attribute, value_mount in tile_bonuses.items():
+                self.update_tile_bonus(coords, key_attribute, value_mount)
 
     def get_map_size(self):
         return self.map_size
 
     def get_map_tile_array(self):
         return self.map_tile_array
+
+    def update_tile_bonus(self, coords, attribute, amount):
+        self.map_tile_array[coords[0]][coords[1]].update_tile_bonus(attribute, amount)
 
 
 class Tile:
@@ -176,12 +185,20 @@ class Tile:
         self.resources["Metal"] = random.randint(0, 5)
 
     def initialise_bonuses(self):
-        self.bonuses = {"Food": 0,
-                        "Wood": 0,
-                        "Gold": 0,
-                        "Metal": 0,
-                        "Attack_Buildings": 0,
-                        "Defense_Buildings": 0}
+        self.bonuses = {"Food": 0.0,
+                        "Wood": 0.0,
+                        "Gold": 0.0,
+                        "Metal": 0.0,
+                        "Attack_Buildings": 0.0,
+                        "Defense_Buildings": 0.0}
+
+    def update_tile_bonus(self, attribute, amount):
+        """
+        :param attribute: str: Name of the bonus type to change e.g. "Food".
+        :param amount: float: Amount to change the value by e.g. 0.1.
+        :return:
+        """
+        self.bonuses[attribute] += amount
 
     def get_coordinates(self):
         return self.coordinates
