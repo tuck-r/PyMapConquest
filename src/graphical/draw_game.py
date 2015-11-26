@@ -41,8 +41,15 @@ class DrawGame:
                 pygame.draw.rect(self.DISPLAYSURF, self.player_colours[held_by], rect_coords)
                 # Draw resource numbers in the corners
                 # Corners are: {Top Left: Food, Top Right: Wood, Bottom Left: Gold, Bottom Right: Metal}
-                label_food = self.font_resources.render(str(a_tile.get_resources()["Food"]), 1, BLACK)
-                self.DISPLAYSURF.blit(label_food, (coords[0] * self.tile_dims, coords[1] * self.tile_dims))
+                resource_vals = a_tile.get_resources()
+                label_food = self.font_resources.render(str(resource_vals["Food"]), 1, BLACK)
+                self.DISPLAYSURF.blit(label_food,
+                                      ((coords[0] * self.tile_dims) + 2,
+                                       (coords[1] * self.tile_dims) + 2))
+                label_food = self.font_resources.render(str(resource_vals["Wood"]), 1, BLACK)
+                self.DISPLAYSURF.blit(label_food,
+                                      (((coords[0] + 1) * self.tile_dims) - 10,
+                                       (coords[1] * self.tile_dims) + 2))
 
         # Draw black lines to form a grid.
         for i in range(0, self.map_size + 1):
