@@ -167,10 +167,10 @@ class Tile:
         Generates random resources to be placed on the tile.
         """
         self.resources = dict()
-        self.resources["Food"] = random.randint(0, 10)
-        self.resources["Gold"] = random.randint(0, 10)
-        self.resources["Wood"] = random.randint(0, 10)
-        self.resources["Metal"] = random.randint(0, 10)
+        self.resources["Food"] = random.randint(0, 5)
+        self.resources["Gold"] = random.randint(0, 5)
+        self.resources["Wood"] = random.randint(0, 5)
+        self.resources["Metal"] = random.randint(0, 5)
 
     def get_coordinates(self):
         return self.coordinates

@@ -46,10 +46,18 @@ class DrawGame:
                 self.DISPLAYSURF.blit(label_food,
                                       ((coords[0] * self.tile_dims) + 2,
                                        (coords[1] * self.tile_dims) + 2))
-                label_food = self.font_resources.render(str(resource_vals["Wood"]), 1, BLACK)
-                self.DISPLAYSURF.blit(label_food,
-                                      (((coords[0] + 1) * self.tile_dims) - 10,
+                label_wood = self.font_resources.render(str(resource_vals["Wood"]), 1, BLACK)
+                self.DISPLAYSURF.blit(label_wood,
+                                      (((coords[0] + 1) * self.tile_dims) - 8,
                                        (coords[1] * self.tile_dims) + 2))
+                label_gold = self.font_resources.render(str(resource_vals["Gold"]), 1, BLACK)
+                self.DISPLAYSURF.blit(label_gold,
+                                      ((coords[0] * self.tile_dims) + 2,
+                                       ((coords[1] + 1) * self.tile_dims) - 10))
+                label_metal = self.font_resources.render(str(resource_vals["Metal"]), 1, BLACK)
+                self.DISPLAYSURF.blit(label_metal,
+                                      (((coords[0] + 1) * self.tile_dims) - 8,
+                                       ((coords[1] + 1) * self.tile_dims) - 10))
 
         # Draw black lines to form a grid.
         for i in range(0, self.map_size + 1):
