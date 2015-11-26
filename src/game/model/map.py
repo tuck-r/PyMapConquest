@@ -7,7 +7,7 @@ class Map:
         # Set number of tiles on map in x and x direction.
         self.map_size = 20
         # Initialise map with empty tiles.
-        self.map_tile_array = [[Tile(x, y) for x in range(0, self.map_size)] for y in range(0, self.map_size)]
+        self.map_tile_array = [[Tile(y, x) for x in range(0, self.map_size)] for y in range(0, self.map_size)]
 
     def initialise_start_tiles(self, players_info_dict):
         """
@@ -86,12 +86,20 @@ class Map:
         adjacent_coords = set([])
         for coord_pair in owned_tile_ids:
             # Check for edge cases.
+            # Corners.
             if coord_pair[0] == 0 and coord_pair[1] == 0:
                 adjacent_coords.add((coord_pair[0] + 1, coord_pair[1]))
                 adjacent_coords.add((coord_pair[0], coord_pair[1] + 1))
             elif coord_pair[0] == (self.map_size - 1) and coord_pair[1] == (self.map_size - 1):
                 adjacent_coords.add((coord_pair[0] - 1, coord_pair[1]))
                 adjacent_coords.add((coord_pair[0], coord_pair[1] - 1))
+            elif coord_pair[0] == 0 and coord_pair[1] == (self.map_size - 1):
+                adjacent_coords.add((coord_pair[0] + 1, coord_pair[1]))
+                adjacent_coords.add((coord_pair[0], coord_pair[1] - 1))
+            elif coord_pair[0] == (self.map_size - 1) and coord_pair[1] == 0:
+                adjacent_coords.add((coord_pair[0] - 1, coord_pair[1]))
+                adjacent_coords.add((coord_pair[0], coord_pair[1] + 1))
+            # Edges.
             elif coord_pair[0] == 0:
                 adjacent_coords.add((coord_pair[0] + 1, coord_pair[1]))
                 adjacent_coords.add((coord_pair[0], coord_pair[1] + 1))
@@ -108,6 +116,7 @@ class Map:
                 adjacent_coords.add((coord_pair[0] + 1, coord_pair[1]))
                 adjacent_coords.add((coord_pair[0] - 1, coord_pair[1]))
                 adjacent_coords.add((coord_pair[0], coord_pair[1] - 1))
+            # Everything else.
             else:
                 adjacent_coords.add((coord_pair[0] + 1, coord_pair[1]))
                 adjacent_coords.add((coord_pair[0] - 1, coord_pair[1]))
