@@ -8,10 +8,18 @@ class GameState:
         self.players_dict = dict_player_info
         # Give each player some starting resources.
         for i in range(0, len(self.players_dict.keys())):
+            # Initialise resources.
             self.players_dict[i]["curr_resources"] = {"Food": 500,
                                                       "Gold": 500,
                                                       "Wood": 500,
                                                       "Metal": 500}
+            # Initialise map bonuses values.
+            self.players_dict[i]["curr_map_bonuses"] = {"Food": 0,
+                                                        "Gold": 0,
+                                                        "Wood": 0,
+                                                        "Metal": 0,
+                                                        "Attack_Buildings": 0,
+                                                        "Defense_Buildings": 0}
         # Create a new starting map.
         self.current_map_state = Map()
         # Create a record of moves that have been made.

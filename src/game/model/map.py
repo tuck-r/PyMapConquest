@@ -157,6 +157,9 @@ class Tile:
         # Resources that the tile holds.
         self.resources = None
         self.initialise_resources()
+        # Bonuses that the tile has.
+        self.bonuses = None
+        self.initialise_bonuses()
         # i,j coordinates for this tile.
         self.coordinates = (i, j)
 
@@ -171,6 +174,14 @@ class Tile:
         self.resources["Gold"] = random.randint(0, 5)
         self.resources["Wood"] = random.randint(0, 5)
         self.resources["Metal"] = random.randint(0, 5)
+
+    def initialise_bonuses(self):
+        self.bonuses = {"Food": 0,
+                        "Wood": 0,
+                        "Gold": 0,
+                        "Metal": 0,
+                        "Attack_Buildings": 0,
+                        "Defense_Buildings": 0}
 
     def get_coordinates(self):
         return self.coordinates
