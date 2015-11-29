@@ -13,6 +13,22 @@ ALL_BUILDINGS = {
             }
         },
         "Cost": {
+            "Food": 100
+        }
+    },
+    "Logging Camp": {
+        "Description": "Provides wood bonuses.",
+        "Effects": {
+            "Bonus": {
+                "Tile": {
+                    "Wood": 1.0
+                },
+                "Map": {
+                    "Wood": 0.1
+                }
+            }
+        },
+        "Cost": {
             "Wood": 100
         }
     },
@@ -29,7 +45,23 @@ ALL_BUILDINGS = {
             }
         },
         "Cost": {
-            "Wood": 100
+            "Gold": 100
+        }
+    },
+    "Metal Mine": {
+        "Description": "Provides metal bonuses.",
+        "Effects": {
+            "Bonus": {
+                "Tile": {
+                    "Metal": 1.0
+                },
+                "Map": {
+                    "Metal": 0.1
+                }
+            }
+        },
+        "Cost": {
+            "Metal": 100
         }
     },
     "Armory": {
