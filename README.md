@@ -8,14 +8,12 @@ Inspired by series such as Age of Empires and Civilisation.
 Requirements
 ------------
 For release 0.1:
+
 - python (2.7.x)
 - cpython
 - pygame
 
-Installation
-------------
-TODO
 
-Contributing
+Installation
 ------------
 TODO
