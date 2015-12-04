@@ -3,7 +3,7 @@ Map Conquest
 A strategy game designed to teach programming and artificial intelligence concepts though building
 game playing scripts.
 
-Inspired by series such as Age of Empires and Civilisation.
+Inspired by games series such as Age of Empires and Civilisation.
 
 Requirements
 ------------
@@ -13,7 +13,8 @@ For release 0.1:
 - cpython
 - pygame
 
+For more information, please see docs/INSTALLATION.md
 
 Installation
 ------------
-TODO
+See doc/INSTALLATION.md
