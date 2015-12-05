@@ -77,6 +77,7 @@ ALL_BUILDINGS = {
     }
 }
 
+
 class Building:
     def __init__(self, building_name):
         self.building_data = ALL_BUILDINGS[building_name]

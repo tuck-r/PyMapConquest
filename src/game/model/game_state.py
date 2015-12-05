@@ -1,8 +1,10 @@
 import time
+import math
 
 from game.model.map import Map
 from game.model.building import Building
 from game.model.move import Move
+
 
 class GameState:
     def __init__(self, dict_player_info):
@@ -11,10 +13,10 @@ class GameState:
         # Give each player some starting resources.
         for i in range(0, len(self.players_dict.keys())):
             # Initialise resources.
-            self.players_dict[i]["curr_resources"] = {"Food": 500,
-                                                      "Gold": 500,
-                                                      "Wood": 500,
-                                                      "Metal": 500}
+            self.players_dict[i]["curr_resources"] = {"Food": 200,
+                                                      "Gold": 200,
+                                                      "Wood": 200,
+                                                      "Metal": 200}
             # Initialise map bonuses values.
             self.players_dict[i]["curr_map_bonuses"] = {"Food": 0.0,
                                                         "Gold": 0.0,
@@ -57,8 +59,12 @@ class GameState:
         # Loop through all tiles, seeing if the active player owns it.
         resources_to_add = self.current_map_state.get_resource_update(self.active_player)
         for key_resource, value_count in resources_to_add.items():
+            # Add tile values.
             self.players_dict[self.active_player]["curr_resources"][key_resource] += value_count
-        # TODO: Add map bonus resources.
+            # Add map bonuses.
+            bonus_for_tile = self.players_dict[self.active_player]["curr_map_bonuses"][key_resource]
+            rounded_addition_value = math.floor(bonus_for_tile * self.players_dict[self.active_player]["curr_resources"][key_resource])
+            self.players_dict[self.active_player]["curr_resources"][key_resource] += rounded_addition_value
 
     def update_player_status(self):
         """
