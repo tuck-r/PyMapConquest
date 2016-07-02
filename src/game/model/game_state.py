@@ -36,6 +36,8 @@ class GameState:
         self.num_rounds_played = 0
         # Initialise starting tile for each player.
         self.current_map_state.initialise_start_tiles(self.players_dict)
+        # Set the allowed win types.
+        self.allowed_win_conditions = {"tiles_owned": 50}
 
         ###
         # Options/status for current player.
@@ -197,9 +199,33 @@ class GameState:
 
         For current testing purposes, a max number of rounds has been set.
         """
+        # Check if we have reached the max number of rounds to play.
         if self.num_rounds_played >= self.NUM_ROUND_LIMIT:
             return True
+        # Check if a win condition has been met.
+        winning_player, win_by_type = self.check_if_win_condition()
+        if winning_player and win_by_type:
+            return True
+        # Game is still in progress since all checks have found nothing.
         return False
+
+    def check_if_win_condition(self):
+        """
+        :return: winning_player: int: dict index of the winning player.
+        :return: win_type: string: Type of win the player has achieved.
+        Valid win types:
+            - tiles_owned: First player to own a specified number of tiles.
+
+        The win type may be specified when setting up a game so that it is an
+        allowed or disallowed way of winning the game.
+
+        Returns None, None if a win condition has been met by none of the players.
+        """
+        if "tiles_owned" in self.allowed_win_conditions:
+            # Only need to check the number of tiles owned by the active player.
+            if len(self.tiles_held) >= self.allowed_win_conditions["tiles_owned"]:
+                return self.active_player, "tiles_owned"
+        return None, None
 
     def print_end_game_stats(self):
         """
