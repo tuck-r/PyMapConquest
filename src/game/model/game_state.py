@@ -47,6 +47,9 @@ class GameState:
         self.tiles_adjacent_enemy = []
         self.valid_moves = []
 
+        # Save end game result.
+        self.end_game_result = None
+
     def get_player_ids(self):
         return self.players_dict.keys()
 
@@ -195,39 +198,38 @@ class GameState:
 
     def has_game_ended(self):
         """
-        :return: dict: dict containing winning player id and the type of win
-        they achieved.
-        Returns None if the game is still ongoing.
+        :return: boolean: Whether the game is still ongoing.
+        Returns False if the game is still ongoing.
 
         For current testing purposes, a max number of rounds has been set.
         """
+        # Check if a win condition has been met.
+        self.update_if_win_condition()
+        # Check if there is a win result stored.
+        if self.end_game_result:
+            return True
+
         # Check if we have reached the max number of rounds to play.
         if self.num_rounds_played >= self.NUM_ROUND_LIMIT:
-            return {"Winner": None, "Win_Type": "round_limited"}
-        # Check if a win condition has been met.
-        winning_player, win_by_type = self.check_if_win_condition()
-        if winning_player and win_by_type:
-            return {"Winner": winning_player, "Win_Type": win_by_type}
+            self.end_game_result = {"Winner": None, "Win_Type": "round_limited"}
+            return True
+
         # Game is still in progress since all checks have found nothing.
-        return None
+        return False
 
-    def check_if_win_condition(self):
+    def update_if_win_condition(self):
         """
-        :return: winning_player: int: dict index of the winning player.
-        :return: win_type: string: Type of win the player has achieved.
-        Valid win types:
-            - tiles_owned: First player to own a specified number of tiles.
+        :return: None.
 
-        The win type may be specified when setting up a game so that it is an
-        allowed or disallowed way of winning the game.
-
-        Returns None, None if a win condition has been met by none of the players.
+        Checks if a win condition has been met, and if so updates
+        self.end_game_result to reflect this win condition.
         """
+        if self.end_game_result:
+            return
         if "tiles_owned" in self.allowed_win_conditions:
             # Only need to check the number of tiles owned by the active player.
             if len(self.tiles_held) >= self.allowed_win_conditions["tiles_owned"]:
-                return self.active_player, "tiles_owned"
-        return None, None
+                self.end_game_result = {"Winner": self.active_player, "Win_Type": "tiles_owned"}
 
     def print_end_game_stats(self):
         """
@@ -267,3 +269,6 @@ class GameState:
 
     def main_game_loop(self):
         pass
+
+    def get_end_game_result(self):
+        return self.end_game_result

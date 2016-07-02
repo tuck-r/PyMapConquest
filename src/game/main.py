@@ -13,7 +13,8 @@ _PLAYERS_EXAMPLE_PATH = "players_example"
 # Limit to the number of invalid moves a player can propose before the game will end their turn for them.
 _INVALID_MOVE_LIMIT = 3
 
-def play_game(player_list, player_example_list, graphical_mode):
+
+def play_game(player_list, player_example_list, graphical_mode=False, verbose=False):
     # Import all player classes that have been added to the game.
     # Each entry in the player_classes list is an instance of that class.
     player_classes = []
@@ -52,17 +53,20 @@ def play_game(player_list, player_example_list, graphical_mode):
     while not curr_game_state.has_game_ended():
         # If it is the start of their turn, update all resources.
         if start_of_turn is True:
-            print "Player " + str(curr_player_index) + "'s turn is beginning."
+            if verbose:
+                print "Player " + str(curr_player_index) + "'s turn is beginning."
             curr_game_state.start_of_player_turn()
             start_of_turn = False
-            print "Player resources updated."
+            if verbose:
+                print "Player resources updated."
 
         # Update the player status/options.
         curr_game_state.update_player_status()
 
-        print curr_game_state.get_held_tile_ids(curr_player_index)
-        print curr_game_state.get_player_resources(curr_player_index)
-        print curr_game_state.get_player_map_bonuses(curr_player_index)
+        if verbose:
+            print curr_game_state.get_held_tile_ids(curr_player_index)
+            print curr_game_state.get_player_resources(curr_player_index)
+            print curr_game_state.get_player_map_bonuses(curr_player_index)
 
         # Select a move.
         proposed_move = dict_players[curr_player_index]["class_defs"].return_move(curr_game_state)
@@ -70,21 +74,26 @@ def play_game(player_list, player_example_list, graphical_mode):
         # Check if move is valid.
         is_move_valid = curr_game_state.is_move_valid(proposed_move)
         if not is_move_valid:
-            print "Error: Move selected is not valid."
+            if verbose:
+                print "Error: Move selected is not valid."
             count_invalid_moves += 1
         # Player has chosen to end turn or has proposed too many invalid moves.
         if proposed_move == "END" or count_invalid_moves >= _INVALID_MOVE_LIMIT:
-            print "Player " + str(curr_player_index) + "'s turn has ended."
+            if verbose:
+                print "Player " + str(curr_player_index) + "'s turn has ended."
             curr_player_index = curr_game_state.end_current_turn()
             start_of_turn = True
             count_invalid_moves = 0
-            continue
         # Otherwise if the move is allowed, update the game state with it.
-        if is_move_valid:
-            print "Player " + str(curr_player_index) + " is making move:"
-            proposed_move.print_move()
+        elif is_move_valid:
+            if verbose:
+                print "Player " + str(curr_player_index) + " is making move:"
+                proposed_move.print_move()
             curr_game_state.make_move(proposed_move)
             count_invalid_moves = 0
+
+        # Update the status of the current player.
+        curr_game_state.update_player_status()
 
         # If we're in graphical mode, redraw the screen.
         if graphical_mode:
@@ -92,10 +101,13 @@ def play_game(player_list, player_example_list, graphical_mode):
             sleep(1)
 
     # Game has ended, print end game info.
-    print curr_game_state.has_game_ended()
     if graphical_mode:
         display_screen.quit_game()
-    curr_game_state.write_game_log()
+    if verbose:
+        curr_game_state.write_game_log()
+
+    # Return winning player information.
+    return curr_game_state.get_end_game_result()
 
 
 if __name__ == "__main__":
