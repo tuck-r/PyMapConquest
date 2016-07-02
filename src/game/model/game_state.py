@@ -195,19 +195,21 @@ class GameState:
 
     def has_game_ended(self):
         """
-        :return: boolean: Whether or not the game has reached an end game state.
+        :return: dict: dict containing winning player id and the type of win
+        they achieved.
+        Returns None if the game is still ongoing.
 
         For current testing purposes, a max number of rounds has been set.
         """
         # Check if we have reached the max number of rounds to play.
         if self.num_rounds_played >= self.NUM_ROUND_LIMIT:
-            return True
+            return {"Winner": None, "Win_Type": "round_limited"}
         # Check if a win condition has been met.
         winning_player, win_by_type = self.check_if_win_condition()
         if winning_player and win_by_type:
-            return True
+            return {"Winner": winning_player, "Win_Type": win_by_type}
         # Game is still in progress since all checks have found nothing.
-        return False
+        return None
 
     def check_if_win_condition(self):
         """
