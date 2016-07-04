@@ -37,7 +37,7 @@ class GameState:
         # Initialise starting tile for each player.
         self.current_map_state.initialise_start_tiles(self.players_dict)
         # Set the allowed win types.
-        self.allowed_win_conditions = {"tiles_owned": 50}
+        self.allowed_win_conditions = {"tiles_owned": 100}
 
         ###
         # Options/status for current player.

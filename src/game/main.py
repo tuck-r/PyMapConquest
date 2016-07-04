@@ -69,7 +69,7 @@ def play_game(player_list, player_example_list, graphical_mode=False, verbose=Fa
             print curr_game_state.get_player_map_bonuses(curr_player_index)
 
         # Select a move.
-        proposed_move = dict_players[curr_player_index]["class_defs"].return_move(curr_game_state)
+        proposed_move = dict_players[curr_player_index]["class_defs"].return_move(curr_game_state, curr_player_index)
 
         # Check if move is valid.
         is_move_valid = curr_game_state.is_move_valid(proposed_move)
