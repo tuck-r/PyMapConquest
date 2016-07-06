@@ -8,6 +8,14 @@ class Move:
         return self.move_type
 
     def get_move_metadata(self):
+        """
+        :return: dict: Data about the move.
+
+        Valid fields:
+            - tile_coords
+            - building_cost
+            - building_name
+        """
         return self.move_metadata
 
     def print_move(self):

@@ -24,4 +24,8 @@ def get_owned_tiles(game_state, player_id):
 
 
 def get_move_coordinates(move):
-    return move.get_move_metadata()
+    """
+    :param move: Move: Object containing data about the move.
+    :return: tuple: Coordinates of the tile relating to the move.
+    """
+    return move.get_move_metadata()["tile_coords"]
