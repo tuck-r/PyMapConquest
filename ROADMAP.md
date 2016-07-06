@@ -4,8 +4,8 @@ Release 0.1
 - Basic ai programming specification.
 - Win mode: Conquest
 - Terminal based run/print game.
-- Pygame visualisation.
-- Fog of war - can only see status of tiles next to those you own or have a unit present on.
+- Pygame visualisation (mostly for debugging AI behaviour).
+- Fog of war - can only see status of tiles that you own or that you can make a move on.
 
 
 Release 0.x

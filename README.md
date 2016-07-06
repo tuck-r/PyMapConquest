@@ -3,7 +3,7 @@ Map Conquest
 A strategy game designed to teach programming and artificial intelligence concepts though building
 game playing scripts.
 
-Inspired by games series such as Age of Empires and Civilisation.
+Inspired by game series such as Age of Empires and Civilisation.
 
 Requirements
 ------------
